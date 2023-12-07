@@ -13,6 +13,8 @@ SOURCES += \
     Entities/Coin.cpp \
     QtImplementations/banknotereceiver.cpp \
     QtImplementations/banknotereceiverwidget.cpp \
+    QtImplementations/cardreader.cpp \
+    QtImplementations/cardreaderwidget.cpp \
     QtImplementations/changedispenser.cpp \
     QtImplementations/coinreceiver.cpp \
     QtImplementations/coinreceiverwidget.cpp \
@@ -37,6 +39,8 @@ HEADERS += \
     MainWindow.h \
     QtImplementations/banknotereceiver.h \
     QtImplementations/banknotereceiverwidget.h \
+    QtImplementations/cardreader.h \
+    QtImplementations/cardreaderwidget.h \
     QtImplementations/changedispenser.h \
     QtImplementations/coinreceiver.h \
     QtImplementations/coinreceiverwidget.h \
@@ -49,6 +53,7 @@ HEADERS += \
 FORMS += \
     MainWindow.ui \
     QtImplementations/banknotereceiverwidget.ui \
+    QtImplementations/cardreaderwidget.ui \
     QtImplementations/coinreceiverwidget.ui \
     QtImplementations/numpadwidget.ui
 

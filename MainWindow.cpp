@@ -7,6 +7,7 @@
 #include "QtImplementations/coinreceiver.h"
 #include "QtImplementations/banknotereceiver.h"
 #include "QtImplementations/changedispenser.h"
+#include "QtImplementations/cardreader.h"
 
 #include <QDebug>
 
@@ -17,27 +18,38 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->centralwidget->hide();
 
-    Display* display = new Display();
+    IDisplay* display = new Display();
     display->SetText("hello world");
 
-    Numpad* numpad = new Numpad();
+    INumpad* numpad = new Numpad();
     connect(numpad, &Numpad::ButtonClicked, [](Buttons btn) { qDebug() << static_cast<int>(btn) << " CLICKED\n"; });
 
-    Dispenser* dispenser = new Dispenser();
-    ChangeDispenser* chDispenser = new ChangeDispenser();
+    IDispenser* dispenser = new Dispenser();
+    IChangeDispenser* chDispenser = new ChangeDispenser();
     chDispenser->GiveCoin(50);
 //    dispenser->GiveItem(3);
 
-    CoinReceiver* coinReceiver = new CoinReceiver();
+    ICoinReceiver* coinReceiver = new CoinReceiver();
     connect(coinReceiver, &CoinReceiver::CoinReceived, [](const Coin& coin)
     {
         qDebug() << "COIN RECEIVED: " << coin.GetValKopecks() << "\n";
     });
 
-    BanknoteReceiver* bnReceiver = new BanknoteReceiver();
+    IBanknoteReceiver* bnReceiver = new BanknoteReceiver();
     connect(bnReceiver, &BanknoteReceiver::BanknoteReceived, [](const Banknote& b)
     {
         qDebug() << "BANKNOTE RECEIVED: " << b.GetValRubles() << "\n";
+    });
+
+    ICardReader* cardReader = new CardReader();
+    cardReader->SetPrice(315);
+    connect(cardReader, &ICardReader::Enabled, []()
+    {
+        qDebug() << "CARD READER: ENABLED\n";
+    });
+    connect(cardReader, &ICardReader::Paid, []()
+    {
+        qDebug() << "CARD READER: PAID\n";
     });
 }
 

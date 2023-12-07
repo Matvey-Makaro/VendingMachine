@@ -6,6 +6,8 @@
 
 class BanknoteReceiver : public IBanknoteReceiver
 {
+    Q_OBJECT
+
 public:
     BanknoteReceiver(QWidget* parent = nullptr);
 

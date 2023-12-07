@@ -6,6 +6,8 @@
 
 class ICardReader : public IDevice
 {
+    Q_OBJECT
+
 public:
     virtual void SetPrice(MoneyAmount price) = 0;
     virtual void Cancel() = 0;
