@@ -4,6 +4,10 @@
 class Coin
 {
 public:
-    Coin();
+    Coin(int value);
+    int GetValKopecks() const;
+
+private:
+    int _valKopecks;
 };
 
