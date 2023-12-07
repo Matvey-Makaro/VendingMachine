@@ -8,5 +8,5 @@ class ICoinReceiver : public IDevice
 public:
 
 signals:
-    void CoinReceived()
+    void CoinReceived();
 };
