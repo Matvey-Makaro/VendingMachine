@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QLabel>
+#include <QLineEdit>
 
 #include "Interfaces/IDisplay.h"
 
@@ -19,7 +20,7 @@ public:
     QWidget& getWidget() { return _widget; }
 
 private:
-    QLabel* _dataLabel;
+    QLineEdit* _dataLineEdit;
     QWidget _widget;
 };
 
