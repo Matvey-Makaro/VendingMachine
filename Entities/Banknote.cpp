@@ -1,6 +1,10 @@
 #include "Banknote.h"
 
-Banknote::Banknote()
-{
+Banknote::Banknote(int value) :
+    _valRubles(value)
+{}
 
+int Banknote::GetValRubles() const
+{
+    return _valRubles;
 }
