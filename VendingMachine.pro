@@ -11,6 +11,7 @@ CONFIG += c++20
 SOURCES += \
     Entities/Banknote.cpp \
     Entities/Coin.cpp \
+    QtImplementations/dispenser.cpp \
     QtImplementations/display.cpp \
     QtImplementations/numpad.cpp \
     main.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     Interfaces/IDisplay.h \
     Interfaces/INumpad.h \
     MainWindow.h \
+    QtImplementations/dispenser.h \
     QtImplementations/display.h \
     QtImplementations/numpad.h \
     Types.h \
