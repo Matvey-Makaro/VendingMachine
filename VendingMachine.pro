@@ -9,11 +9,24 @@ CONFIG += c++20
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Entities/Banknote.cpp \
+    Entities/Coin.cpp \
     main.cpp \
     MainWindow.cpp
 
 HEADERS += \
-    MainWindow.h
+    Entities/Banknote.h \
+    Entities/Coin.h \
+    Interfaces/IBanknoteReceiver.h \
+    Interfaces/ICardReader.h \
+    Interfaces/IChangeDispenser.h \
+    Interfaces/ICoinReceiver.h \
+    Interfaces/IDevice.h \
+    Interfaces/IDispenser.h \
+    Interfaces/IDisplay.h \
+    Interfaces/INumpad.h \
+    MainWindow.h \
+    Types.h
 
 FORMS += \
     MainWindow.ui
