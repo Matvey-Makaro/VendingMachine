@@ -11,6 +11,8 @@ CONFIG += c++20
 SOURCES += \
     Entities/Banknote.cpp \
     Entities/Coin.cpp \
+    QtImplementations/banknotereceiver.cpp \
+    QtImplementations/banknotereceiverwidget.cpp \
     QtImplementations/coinreceiver.cpp \
     QtImplementations/coinreceiverwidget.cpp \
     QtImplementations/dispenser.cpp \
@@ -32,6 +34,8 @@ HEADERS += \
     Interfaces/IDisplay.h \
     Interfaces/INumpad.h \
     MainWindow.h \
+    QtImplementations/banknotereceiver.h \
+    QtImplementations/banknotereceiverwidget.h \
     QtImplementations/coinreceiver.h \
     QtImplementations/coinreceiverwidget.h \
     QtImplementations/dispenser.h \
@@ -42,6 +46,7 @@ HEADERS += \
 
 FORMS += \
     MainWindow.ui \
+    QtImplementations/banknotereceiverwidget.ui \
     QtImplementations/coinreceiverwidget.ui \
     QtImplementations/numpadwidget.ui
 

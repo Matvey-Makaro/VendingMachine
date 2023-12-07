@@ -5,6 +5,7 @@
 #include "QtImplementations/numpad.h"
 #include "QtImplementations/dispenser.h"
 #include "QtImplementations/coinreceiver.h"
+#include "QtImplementations/banknotereceiver.h"
 
 #include <QDebug>
 
@@ -28,6 +29,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(coinReceiver, &CoinReceiver::CoinReceived, [](const Coin& coin)
     {
         qDebug() << "COIN RECEIVED: " << coin.GetValKopecks() << "\n";
+    });
+
+    BanknoteReceiver* bnReceiver = new BanknoteReceiver();
+    connect(bnReceiver, &BanknoteReceiver::BanknoteReceived, [](const Banknote& b)
+    {
+        qDebug() << "BANKNOTE RECEIVED: " << b.GetValRubles() << "\n";
     });
 }
 
