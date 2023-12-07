@@ -9,6 +9,8 @@ Display::Display(QWidget *parent)
     _dataLineEdit = new QLineEdit(&_widget);
     _dataLineEdit->resize(_widget.size());
     _dataLineEdit->setReadOnly(true);
+
+    _widget.show();
 }
 
 void Display::SetText(const QString &text)

@@ -17,8 +17,6 @@ public:
     void SetText(const QString& text) override;
     QString GetText() const override;
 
-    QWidget& getWidget() { return _widget; }
-
 private:
     QLineEdit* _dataLineEdit;
     QWidget _widget;

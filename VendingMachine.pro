@@ -12,8 +12,10 @@ SOURCES += \
     Entities/Banknote.cpp \
     Entities/Coin.cpp \
     QtImplementations/display.cpp \
+    QtImplementations/numpad.cpp \
     main.cpp \
-    MainWindow.cpp
+    MainWindow.cpp \
+    QtImplementations/numpadwidget.cpp
 
 HEADERS += \
     Entities/Banknote.h \
@@ -28,10 +30,13 @@ HEADERS += \
     Interfaces/INumpad.h \
     MainWindow.h \
     QtImplementations/display.h \
-    Types.h
+    QtImplementations/numpad.h \
+    Types.h \
+    QtImplementations/numpadwidget.h
 
 FORMS += \
-    MainWindow.ui
+    MainWindow.ui \
+    QtImplementations/numpadwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
