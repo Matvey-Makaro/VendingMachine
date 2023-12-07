@@ -11,6 +11,7 @@ CONFIG += c++20
 SOURCES += \
     Entities/Banknote.cpp \
     Entities/Coin.cpp \
+    QtImplementations/display.cpp \
     main.cpp \
     MainWindow.cpp
 
@@ -26,6 +27,7 @@ HEADERS += \
     Interfaces/IDisplay.h \
     Interfaces/INumpad.h \
     MainWindow.h \
+    QtImplementations/display.h \
     Types.h
 
 FORMS += \
@@ -35,3 +37,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    QtImplementations/фюфщвл

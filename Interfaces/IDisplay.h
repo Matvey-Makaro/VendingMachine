@@ -12,6 +12,4 @@ public:
 
     virtual void SetText(const QString& text) = 0;
     virtual QString GetText() const = 0;
-
-
 };
