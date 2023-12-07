@@ -6,6 +6,7 @@
 #include "QtImplementations/dispenser.h"
 #include "QtImplementations/coinreceiver.h"
 #include "QtImplementations/banknotereceiver.h"
+#include "QtImplementations/changedispenser.h"
 
 #include <QDebug>
 
@@ -23,6 +24,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(numpad, &Numpad::ButtonClicked, [](Buttons btn) { qDebug() << static_cast<int>(btn) << " CLICKED\n"; });
 
     Dispenser* dispenser = new Dispenser();
+    ChangeDispenser* chDispenser = new ChangeDispenser();
+    chDispenser->GiveCoin(50);
 //    dispenser->GiveItem(3);
 
     CoinReceiver* coinReceiver = new CoinReceiver();

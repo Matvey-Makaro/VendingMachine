@@ -13,6 +13,7 @@ SOURCES += \
     Entities/Coin.cpp \
     QtImplementations/banknotereceiver.cpp \
     QtImplementations/banknotereceiverwidget.cpp \
+    QtImplementations/changedispenser.cpp \
     QtImplementations/coinreceiver.cpp \
     QtImplementations/coinreceiverwidget.cpp \
     QtImplementations/dispenser.cpp \
@@ -36,6 +37,7 @@ HEADERS += \
     MainWindow.h \
     QtImplementations/banknotereceiver.h \
     QtImplementations/banknotereceiverwidget.h \
+    QtImplementations/changedispenser.h \
     QtImplementations/coinreceiver.h \
     QtImplementations/coinreceiverwidget.h \
     QtImplementations/dispenser.h \
