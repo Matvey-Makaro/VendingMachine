@@ -34,4 +34,6 @@ private:
     Ui::CardReaderWidget *ui;
 };
 
+using CardReaderWidgetShp = QSharedPointer<CardReaderWidget>;
+
 #endif // CARDREADERWIDGET_H

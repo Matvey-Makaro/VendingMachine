@@ -1,10 +1,10 @@
 #include "Banknote.h"
 
 Banknote::Banknote(int value) :
-    _valRubles(value)
+    _valKopecks(value)
 {}
 
-int Banknote::GetValRubles() const
+int Banknote::GetValKopecks() const
 {
-    return _valRubles;
+    return _valKopecks;
 }

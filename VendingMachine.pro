@@ -9,8 +9,14 @@ CONFIG += c++20
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    App/AppConfig.cpp \
+    App/AppConfigReader.cpp \
+    App/AppConfigurator.cpp \
+    BLL/VendingMachine.cpp \
+    BLL/VendingMachineDevices.cpp \
     Entities/Banknote.cpp \
     Entities/Coin.cpp \
+    Entities/Item.cpp \
     QtImplementations/banknotereceiver.cpp \
     QtImplementations/banknotereceiverwidget.cpp \
     QtImplementations/cardreader.cpp \
@@ -26,8 +32,14 @@ SOURCES += \
     QtImplementations/numpadwidget.cpp
 
 HEADERS += \
+    App/AppConfig.h \
+    App/AppConfigReader.h \
+    App/AppConfigurator.h \
+    BLL/VendingMachine.h \
+    BLL/VendingMachineDevices.h \
     Entities/Banknote.h \
     Entities/Coin.h \
+    Entities/Item.h \
     Interfaces/IBanknoteReceiver.h \
     Interfaces/ICardReader.h \
     Interfaces/IChangeDispenser.h \

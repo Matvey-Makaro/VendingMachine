@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "IDevice.h"
 #include "Types.h"
 
@@ -16,3 +15,4 @@ signals:
     void Enabled();
     void Paid();
 };
+using ICardReaderShp = QSharedPointer<ICardReader>;

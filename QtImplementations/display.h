@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QLineEdit>
+#include <QTextEdit>
 
 #include "Interfaces/IDisplay.h"
 
@@ -18,8 +19,9 @@ public:
     QString GetText() const override;
 
 private:
-    QLineEdit* _dataLineEdit;
+    QTextEdit* _textEdit;
     QWidget _widget;
 };
+using DisplayShp = QSharedPointer<Display>;
 
 #endif // DISPLAY_H

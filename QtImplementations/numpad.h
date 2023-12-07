@@ -17,5 +17,6 @@ private slots:
 private:
     NumpadWidget _numpadWidget;
 };
+using NumpadShp = QSharedPointer<Numpad>;
 
 #endif // NUMPAD_H

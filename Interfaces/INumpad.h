@@ -29,3 +29,4 @@ public:
 signals:
     void ButtonClicked(Buttons);
 };
+using INumpadShp = QSharedPointer<INumpad>;

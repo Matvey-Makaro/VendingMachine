@@ -19,8 +19,6 @@ NumpadWidget::~NumpadWidget()
 
 void NumpadWidget::on_btn0_clicked()
 {
-
-
     emit ButtonClicked(Buttons::Num0);
 }
 

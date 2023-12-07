@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QVector>
 
 class Coin
 {
@@ -11,3 +12,4 @@ private:
     int _valKopecks;
 };
 
+using CoinVec = QVector<Coin>;

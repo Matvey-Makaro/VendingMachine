@@ -14,5 +14,6 @@ public:
 private:
     CoinReceiverWidget _coinRecWidget;
 };
+using CoinReceiverShp = QSharedPointer<CoinReceiver>;
 
 #endif // COINRECEIVER_H

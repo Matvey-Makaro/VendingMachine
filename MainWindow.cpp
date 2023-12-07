@@ -38,7 +38,7 @@ MainWindow::MainWindow(QWidget *parent)
     IBanknoteReceiver* bnReceiver = new BanknoteReceiver();
     connect(bnReceiver, &BanknoteReceiver::BanknoteReceived, [](const Banknote& b)
     {
-        qDebug() << "BANKNOTE RECEIVED: " << b.GetValRubles() << "\n";
+        qDebug() << "BANKNOTE RECEIVED: " << b.GetValKopecks() << "\n";
     });
 
     ICardReader* cardReader = new CardReader();

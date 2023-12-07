@@ -7,3 +7,4 @@ class IChangeDispenser : public IDevice
 public:
     virtual void GiveCoin(int valKopecks) = 0;
 };
+using IChangeDispenserShp = QSharedPointer<IChangeDispenser>;

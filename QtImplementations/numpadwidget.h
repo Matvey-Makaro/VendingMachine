@@ -1,6 +1,7 @@
 #ifndef NUMPADWIDGET_H
 #define NUMPADWIDGET_H
 
+#include <QSharedPointer>
 #include <QWidget>
 
 enum class Buttons;
@@ -50,5 +51,7 @@ private slots:
 private:
     Ui::NumpadWidget *ui;
 };
+using NumpadWidgetShp = QSharedPointer<NumpadWidget>;
+
 
 #endif // NUMPADWIDGET_H

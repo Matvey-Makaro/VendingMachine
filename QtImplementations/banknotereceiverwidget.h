@@ -30,5 +30,6 @@ private slots:
 private:
     Ui::BanknoteReceiverWidget *ui;
 };
+using BanknoteReceiverWidgetShp = QSharedPointer<BanknoteReceiverWidget>;
 
 #endif // BANKNOTERECEIVERWIDGET_H
