@@ -8,12 +8,7 @@ class Dispenser : public IDispenser
     Q_OBJECT
 
 public:
-    Dispenser(QWidget* parent = nullptr) : _parent(parent) {}
-
     void GiveItem(int slotIndex) override;
-
-private:
-    QWidget* _parent;
 };
 
 #endif // DISPENSER_H

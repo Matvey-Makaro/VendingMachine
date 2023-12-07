@@ -4,6 +4,7 @@
 #include "QtImplementations/display.h"
 #include "QtImplementations/numpad.h"
 #include "QtImplementations/dispenser.h"
+#include "QtImplementations/coinreceiver.h"
 
 #include <QDebug>
 
@@ -21,7 +22,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(numpad, &Numpad::ButtonClicked, [](Buttons btn) { qDebug() << static_cast<int>(btn) << " CLICKED\n"; });
 
     Dispenser* dispenser = new Dispenser();
-    dispenser->GiveItem(3);
+//    dispenser->GiveItem(3);
+
+    CoinReceiver* coinReceiver = new CoinReceiver();
+    connect(coinReceiver, &CoinReceiver::CoinReceived, [](const Coin& coin)
+    {
+        qDebug() << "COIN RECEIVED: " << coin.GetValKopecks() << "\n";
+    });
 }
 
 MainWindow::~MainWindow()

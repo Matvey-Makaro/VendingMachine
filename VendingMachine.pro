@@ -11,6 +11,8 @@ CONFIG += c++20
 SOURCES += \
     Entities/Banknote.cpp \
     Entities/Coin.cpp \
+    QtImplementations/coinreceiver.cpp \
+    QtImplementations/coinreceiverwidget.cpp \
     QtImplementations/dispenser.cpp \
     QtImplementations/display.cpp \
     QtImplementations/numpad.cpp \
@@ -30,6 +32,8 @@ HEADERS += \
     Interfaces/IDisplay.h \
     Interfaces/INumpad.h \
     MainWindow.h \
+    QtImplementations/coinreceiver.h \
+    QtImplementations/coinreceiverwidget.h \
     QtImplementations/dispenser.h \
     QtImplementations/display.h \
     QtImplementations/numpad.h \
@@ -38,6 +42,7 @@ HEADERS += \
 
 FORMS += \
     MainWindow.ui \
+    QtImplementations/coinreceiverwidget.ui \
     QtImplementations/numpadwidget.ui
 
 # Default rules for deployment.

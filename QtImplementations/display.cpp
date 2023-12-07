@@ -1,7 +1,6 @@
 #include "display.h"
 
-Display::Display(QWidget *parent)
-    : _widget(parent)
+Display::Display(QWidget *parent) : _widget(parent)
 {
     _widget.setWindowTitle("Display");
     _widget.setFixedSize(300, 100);
