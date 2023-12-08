@@ -1,6 +1,8 @@
 #include "cardreaderwidget.h"
 #include "ui_cardreaderwidget.h"
 
+#include <QMessageBox>
+
 CardReaderWidget::CardReaderWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CardReaderWidget)
@@ -45,6 +47,8 @@ void CardReaderWidget::on_btnEnable_clicked()
 
 void CardReaderWidget::on_btnPayWithCard_clicked()
 {
+    QMessageBox::information(this, "Оплата", tr("Списать с карты %1").arg(ui->sumLabel->text()), QMessageBox::Ok);
+
     Cancel();
     emit Paid();
 }
