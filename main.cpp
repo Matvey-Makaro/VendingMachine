@@ -20,6 +20,8 @@ int main(int argc, char *argv[])
     Database db(dbFile);
     db.setBalance(70);
     qDebug() << db.getBalance() << " = BALANCE";
+
+    db.setAllSlots({ Slot { 1, Item("pen", 10), 20 }, Slot { 2, Item("pen2", 15), 20 } });
     //
 
     AppConfigurator configurator(cfg);

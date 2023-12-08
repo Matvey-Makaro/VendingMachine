@@ -2,10 +2,12 @@
 #define DATABASE_H
 
 #include <QString>
+#include <QList>
 #include <QtSql>
 #include <QSqlDatabase>
 
 #include "Types.h"
+#include "Entities/Slot.h"
 
 class QSqlQuery;
 
@@ -17,6 +19,10 @@ public:
 
     void setBalance(MoneyAmount balance);
     MoneyAmount getBalance();
+
+    void setAllSlots(const QList<Slot>& slotsData);
+    Slot getSlot(int id);
+    void setSlot(const Slot& s);
 
 private:
     bool _execShowError(QSqlQuery& q, const QString& queryStr);

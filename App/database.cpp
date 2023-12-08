@@ -42,6 +42,29 @@ MoneyAmount Database::getBalance()
     return q.value(0).toInt();
 }
 
+void Database::setAllSlots(const QList<Slot> &slotsData)
+{
+    QSqlQuery q;
+    _execShowError(q, "delete from slots;");
+
+    for (const auto& s : slotsData)
+    {
+        _execShowError(q, QString("insert into slots (id, name, price_kopecks, count)"
+                                  "values (%1, '%2', %3, %4);")
+                       .arg(s.id).arg(s.item.GetName()).arg(s.item.GetMoneyAmount()).arg(s.count));
+    }
+}
+
+Slot Database::getSlot(int id)
+{
+
+}
+
+void Database::setSlot(const Slot &s)
+{
+
+}
+
 bool Database::_execShowError(QSqlQuery &q, const QString &queryStr)
 {
     bool res = q.exec(queryStr);
@@ -56,7 +79,8 @@ bool Database::_execShowError(QSqlQuery &q, const QString &queryStr)
 
 void Database::_createTablesIfNotExist()
 {
-    // Слоты
+    // Слоты: задать итемы в каждый слот (массивом), прочитать информацию об итеме по номеру слота,
+    // поставить новую инфу об итеме по номеру слота
     // Баланс
     // Монеты
     // Банкноты
