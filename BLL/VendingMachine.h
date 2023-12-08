@@ -30,6 +30,8 @@ private slots:
     void OnBanknoteReceived(const Banknote& banknote);
     void OnCoinReceived(const Coin& coin);
     void OnButtonClicked(Buttons button);
+    void OnCardReaderEnabled();
+    void OnCardReaderPaid();
 
 private:
     void AddBanknote(const Banknote& banknote);
@@ -53,5 +55,8 @@ private:
 
     QString _numpadDisplayText;
     QVector<Item> _items;
+
+    bool _isCardReaderEnabled = false;
+    int _lastItemIndex = 0;
 };
 using VendingMachineShp = QSharedPointer<VendingMachine>;

@@ -46,6 +46,10 @@ VendingMachine::VendingMachine(VendingMachineDevicesShp devices, QObject *parent
             this, &VendingMachine::OnCoinReceived);
     connect(_devices->Numpad.data(), &INumpad::ButtonClicked,
             this, &VendingMachine::OnButtonClicked);
+    connect(_devices->CardReader.data(), &ICardReader::Enabled,
+            this, &VendingMachine::OnCardReaderEnabled);
+    connect(_devices->CardReader.data(), &ICardReader::Paid,
+            this, &VendingMachine::OnCardReaderPaid);
 
     InitItemDisplays();
     UpdateNumpadDisplay();
@@ -87,6 +91,19 @@ void VendingMachine::OnButtonClicked(Buttons button)
     UpdateNumpadDisplay();
 }
 
+void VendingMachine::OnCardReaderEnabled()
+{
+    _isCardReaderEnabled = true;
+    _devices->InfoOutputter->Output(Messages::EnterItemNumber);
+}
+
+void VendingMachine::OnCardReaderPaid()
+{
+    _isCardReaderEnabled = false;
+    _devices->Dispenser->GiveItem(_lastItemIndex);
+    _devices->InfoOutputter->Output(Messages::GetItem);
+}
+
 void VendingMachine::AddBanknote(const Banknote& banknote)
 {
     _banknotes[banknote.GetValKopecks()].push_back(banknote);
@@ -105,7 +122,7 @@ void VendingMachine::OnOkButtonClicked()
         return;
     }
     int itemIndex = _numpadDisplayText.toInt() - 1;
-    if(itemIndex < 0  && itemIndex >= _items.size())
+    if(itemIndex < 0  || itemIndex >= _items.size())
     {
         _devices->InfoOutputter->Output(Messages::EnterValidItemNumber);
         return;
@@ -115,6 +132,13 @@ void VendingMachine::OnOkButtonClicked()
     if(!item.IsAvailable())
     {
         _devices->InfoOutputter->Output(Messages::ProductIsTemporarilyUnavailable);
+        return;
+    }
+
+    _lastItemIndex = itemIndex;
+    if(_isCardReaderEnabled)
+    {
+        _devices->CardReader->SetPrice(item.GetMoneyAmount());
         return;
     }
 
@@ -133,6 +157,7 @@ void VendingMachine::OnOkButtonClicked()
 
     SetCurrMoneyAmount(_currMoneyAmount - item.GetMoneyAmount());
     _devices->Dispenser->GiveItem(itemIndex);
+    _devices->InfoOutputter->Output(Messages::GetItem);
 }
 
 void VendingMachine::OnChangeButtonClicked()
@@ -176,8 +201,10 @@ void VendingMachine::SetCurrMoneyAmount(MoneyAmount moneyAmount)
 
 void VendingMachine::UpdateNumpadDisplay()
 {
-    // TODO: Формировать нормальную запись для денег: 1р 70коп
-    QString text = QString::number(_currMoneyAmount) + "коп.\n";
+    int rubles = _currMoneyAmount / 100;
+    int kopecks = _currMoneyAmount % 100;
+
+    QString text = QString("%1р., %2 коп.").arg(rubles).arg(kopecks) + '\n';
     text += _numpadDisplayText;
     _devices->NumpadDisplay->SetText(text);
 }
