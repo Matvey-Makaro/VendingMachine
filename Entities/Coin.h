@@ -5,7 +5,7 @@
 class Coin
 {
 public:
-    Coin(int value);
+    Coin(int value = 0);
     int GetValKopecks() const;
 
 private:

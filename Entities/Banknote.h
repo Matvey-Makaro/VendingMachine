@@ -5,7 +5,7 @@
 class Banknote
 {
 public:
-    Banknote(int value);
+    Banknote(int value = 0);
 
     int GetValKopecks() const;
 
