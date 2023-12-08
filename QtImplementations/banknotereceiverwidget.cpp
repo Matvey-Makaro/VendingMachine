@@ -8,6 +8,8 @@ BanknoteReceiverWidget::BanknoteReceiverWidget(QWidget *parent) :
     ui(new Ui::BanknoteReceiverWidget)
 {
     ui->setupUi(this);
+
+    move(-100, 0);
 }
 
 BanknoteReceiverWidget::~BanknoteReceiverWidget()
@@ -17,15 +19,15 @@ BanknoteReceiverWidget::~BanknoteReceiverWidget()
 
 void BanknoteReceiverWidget::on_btn5rubles_clicked()
 {
-    emit BanknoteReceived(Banknote(5));
+    emit BanknoteReceived(Banknote(500));
 }
 
 void BanknoteReceiverWidget::on_btn10rubles_clicked()
 {
-    emit BanknoteReceived(Banknote(10));
+    emit BanknoteReceived(Banknote(1000));
 }
 
 void BanknoteReceiverWidget::on_btn20rubles_clicked()
 {
-    emit BanknoteReceived(Banknote(20));
+    emit BanknoteReceived(Banknote(2000));
 }

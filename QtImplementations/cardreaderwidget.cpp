@@ -28,6 +28,7 @@ void CardReaderWidget::SetPrice(MoneyAmount price)
 void CardReaderWidget::Enable()
 {
     ui->btnPayWithCard->setEnabled(true);
+    ui->btnEnable->setEnabled(false);
     ui->sumTextLabel->show();
     ui->sumLabel->show();
 }
@@ -35,6 +36,7 @@ void CardReaderWidget::Enable()
 void CardReaderWidget::Cancel()
 {
     ui->btnPayWithCard->setEnabled(false);
+    ui->btnEnable->setEnabled(true);
     ui->sumTextLabel->hide();
     ui->sumLabel->hide();
 }
