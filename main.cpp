@@ -30,6 +30,14 @@ int main(int argc, char *argv[])
     db.setCoinCount(50, 2);
     db.setCoinCount(50, 3);
     db.setCoinCount(100, 1);
+
+    qDebug() << "50 value coins: " << db.getCoinCount(50);
+
+    db.setBanknoteCount(500, 2);
+    db.setBanknoteCount(500, 3);
+    db.setBanknoteCount(1000, 1);
+
+    qDebug() << "5 rubles: " << db.getBanknoteCount(500);
     //
 
     AppConfigurator configurator(cfg);

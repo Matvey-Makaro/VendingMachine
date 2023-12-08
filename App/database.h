@@ -27,6 +27,9 @@ public:
     void setCoinCount(int value, int count);
     int getCoinCount(int value);
 
+    void setBanknoteCount(int value, int count);
+    int getBanknoteCount(int value);
+
 private:
     bool _execShowError(QSqlQuery& q, const QString& queryStr);
 

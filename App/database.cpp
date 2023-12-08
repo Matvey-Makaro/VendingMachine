@@ -100,6 +100,27 @@ int Database::getCoinCount(int value)
     return q.value(0).toInt();
 }
 
+void Database::setBanknoteCount(int value, int count)
+{
+    QSqlQuery q;
+
+    if (_execShowError(q, QString("update banknotes set count = %1 where value = %2")
+                       .arg(count).arg(value)))
+    {
+        _execShowError(q, QString("insert into banknotes (value, count)"
+                                  "values (%1, %2);")
+                               .arg(value).arg(count));
+    }
+}
+
+int Database::getBanknoteCount(int value)
+{
+    QSqlQuery q(QString("select count from banknotes where value = %1;").arg(value));
+    q.next();
+
+    return q.value(0).toInt();
+}
+
 bool Database::_execShowError(QSqlQuery &q, const QString &queryStr)
 {
     bool res = q.exec(queryStr);
@@ -117,7 +138,8 @@ void Database::_createTablesIfNotExist()
     // Слоты: задать итемы в каждый слот (массивом), прочитать информацию об итеме по номеру слота,
     // поставить новую инфу об итеме по номеру слота
     // Баланс
-    // Монеты: задать количество монет определённого номинала, получить количество монет опр. номинала
+    // Монеты: задать количество монет определённого номинала, получить количество монет опр. номинала,
+    // получить все монеты
     // Банкноты: то же самое
 
     QSqlQuery("create table slots (id int primary key not null, name text, price_kopecks int, count int);");
