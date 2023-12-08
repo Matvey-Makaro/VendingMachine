@@ -4,17 +4,23 @@
 #include <QVector>
 #include <QHash>
 #include <QString>
+#include <map>
+#include <optional>
 
 #include "VendingMachineDevices.h"
 
 #include "Entities/Banknote.h"
 #include "Entities/Coin.h"
+#include "Entities/Item.h"
 
 #include "Types.h"
 
 class VendingMachine : public QObject
 {
     Q_OBJECT
+
+    using MoneyAmountToCoinCount = std::map<MoneyAmount, int>;
+    using MoneyAmountToCoinCountOpt = std::optional<MoneyAmountToCoinCount>;
 public:
     // TODO: Инициализировать корректно в конструкторе
     explicit VendingMachine(VendingMachineDevicesShp devices, QObject *parent = nullptr);
@@ -36,14 +42,16 @@ private:
     void SetCurrMoneyAmount(MoneyAmount moneyAmount);
     void UpdateNumpadDisplay();
 
+    MoneyAmountToCoinCountOpt CalculateChange(MoneyAmount change);
+
 private:
     VendingMachineDevicesShp _devices;
 
     MoneyAmount _currMoneyAmount;
-    QHash<MoneyAmount, BanknoteVec> _banknotes;
-    QHash<MoneyAmount, CoinVec> _coins;
+    std::map<MoneyAmount, BanknoteVec> _banknotes;
+    std::map<MoneyAmount, CoinVec> _coins;
 
     QString _numpadDisplayText;
-    // TODO: Добавить items
+    QVector<Item> _items;
 };
 using VendingMachineShp = QSharedPointer<VendingMachine>;

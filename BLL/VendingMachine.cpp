@@ -68,11 +68,11 @@ void VendingMachine::OnButtonClicked(Buttons button)
 {
     if(button == Buttons::OK)
     {
-        // TODO: on OK clicked
+        OnOkButtonClicked();
     }
     else if(button == Buttons::Change)
     {
-        // TODO: On Change clicked
+        OnChangeButtonClicked();
     }
     else if(button == Buttons::Del)
     {
@@ -101,20 +101,57 @@ void VendingMachine::OnOkButtonClicked()
 {
     if(_numpadDisplayText.isEmpty())
     {
-        // TODO: Сообщить о том, что надо что-то ввести
+        _devices->InfoOutputter->Output(Messages::EnterItemNumber);
+        return;
     }
-    // TODO: Проверить входит ли в допустимый диапазон
-    // TODO: Доступен ли товар?
-    // TODO: Достаточно ли средств?
-    // TODO: Можем ли выдать сдачу?
-    // TODO: Отдать товар
+    int itemIndex = _numpadDisplayText.toInt() - 1;
+    if(itemIndex < 0  && itemIndex >= _items.size())
+    {
+        _devices->InfoOutputter->Output(Messages::EnterValidItemNumber);
+        return;
+    }
+
+    const auto& item = _items[itemIndex];
+    if(!item.IsAvailable())
+    {
+        _devices->InfoOutputter->Output(Messages::ProductIsTemporarilyUnavailable);
+        return;
+    }
+
+    if(item.GetMoneyAmount() > _currMoneyAmount)
+    {
+        _devices->InfoOutputter->Output(Messages::NotEnoughCash);
+        return;
+    }
+
+    auto change = CalculateChange(_currMoneyAmount - item.GetMoneyAmount());
+    if(!change)
+    {
+        _devices->InfoOutputter->Output(Messages::CanNotGetChange);
+        return;
+    }
+
+    SetCurrMoneyAmount(_currMoneyAmount - item.GetMoneyAmount());
+    _devices->Dispenser->GiveItem(itemIndex);
 }
 
 void VendingMachine::OnChangeButtonClicked()
 {
-    // Не пустой ли баланс
-    // Рассчитать как выдать сдачу
-    // Выдать сдачу
+    auto change = CalculateChange(_currMoneyAmount);
+    if(!change)
+    {
+        _devices->InfoOutputter->Output(Messages::CanNotGetChange);
+        return;
+    }
+    for(const auto& [amount, coinCount] : *change)
+    {
+        for(int i = 0; i < coinCount; i++)
+        {
+            _devices->ChangeDispenser->GiveCoin(amount);
+            _coins[amount].pop_back();
+        }
+    }
+    SetCurrMoneyAmount(0);
 }
 
 void VendingMachine::InitItemDisplays()
@@ -122,8 +159,11 @@ void VendingMachine::InitItemDisplays()
     auto& itemDisplays = _devices->ItemDisplays;
     for(int i = 0; i < itemDisplays.size(); i++)
     {
-        QString text = "Item" + QString::number(i + 1) + "\n";
-        text += QString::number((i + 1) * 10) + "коп.";
+        Item item("Item" + QString::number(i + 1), (i + 1) * 10);
+        _items.push_back(item);
+
+        QString text = item.GetName() + "\n";
+        text += QString::number(item.GetMoneyAmount()) + "коп.";
         itemDisplays[i]->SetText(text);
     }
 }
@@ -140,6 +180,26 @@ void VendingMachine::UpdateNumpadDisplay()
     QString text = QString::number(_currMoneyAmount) + "коп.\n";
     text += _numpadDisplayText;
     _devices->NumpadDisplay->SetText(text);
+}
+
+VendingMachine::MoneyAmountToCoinCountOpt VendingMachine::CalculateChange(MoneyAmount change)
+{
+    MoneyAmountToCoinCount result;
+    for(auto it = _coins.crbegin(); it != _coins.crend(); it++)
+    {
+        auto amount = it->first;
+        const auto& coins = it->second;
+
+        int numOfCoins = coins.size();
+        int numOfCoinsNeeded = change / amount;
+        int numOfCoinsToGive = numOfCoins > numOfCoinsNeeded ? numOfCoinsNeeded : numOfCoins;
+        result[amount] = numOfCoinsToGive;
+        change -= numOfCoinsToGive * amount;
+    }
+
+    if(change != 0)
+        return std::nullopt;
+    return result;
 }
 
 
