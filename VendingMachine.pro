@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -12,6 +12,7 @@ SOURCES += \
     App/AppConfig.cpp \
     App/AppConfigReader.cpp \
     App/AppConfigurator.cpp \
+    App/database.cpp \
     BLL/VendingMachine.cpp \
     BLL/VendingMachineDevices.cpp \
     Entities/Banknote.cpp \
@@ -35,6 +36,7 @@ HEADERS += \
     App/AppConfig.h \
     App/AppConfigReader.h \
     App/AppConfigurator.h \
+    App/database.h \
     BLL/VendingMachine.h \
     BLL/VendingMachineDevices.h \
     Entities/Banknote.h \
