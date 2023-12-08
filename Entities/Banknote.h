@@ -1,13 +1,16 @@
 #pragma once
 
+#include <QVector>
+
 class Banknote
 {
 public:
     Banknote(int value);
 
-    int GetValRubles() const;
+    int GetValKopecks() const;
 
 private:
-    int _valRubles;
+    int _valKopecks;
 };
 
+using BanknoteVec = QVector<Banknote>;

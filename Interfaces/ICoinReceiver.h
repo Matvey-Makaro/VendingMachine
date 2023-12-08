@@ -10,3 +10,4 @@ class ICoinReceiver : public IDevice
 signals:
     void CoinReceived(const Coin& coin);
 };
+using ICoinReceiverShp = QSharedPointer<ICoinReceiver>;

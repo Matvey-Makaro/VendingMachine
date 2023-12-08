@@ -40,5 +40,6 @@ private slots:
 private:
     Ui::CoinReceiverWidget *ui;
 };
+using CoinReceiverWidgetShp = QSharedPointer<CoinReceiverWidget>;
 
 #endif // COINRECEIVERWIDGET_H

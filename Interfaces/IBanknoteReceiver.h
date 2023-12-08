@@ -8,6 +8,6 @@ class IBanknoteReceiver : public IDevice
     Q_OBJECT
 
 signals:
-    void BanknoteReceived(const Banknote& coin);
-
+    void BanknoteReceived(const Banknote& banknote);
 };
+using IBanknoteReceiverShp = QSharedPointer<IBanknoteReceiver>;

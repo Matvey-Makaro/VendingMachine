@@ -10,5 +10,6 @@ class ChangeDispenser : public IChangeDispenser
 public:
     void GiveCoin(int valKopecks) override;
 };
+using ChangeDispenserShp = QSharedPointer<ChangeDispenser>;
 
 #endif // CHANGEDISPENSER_H

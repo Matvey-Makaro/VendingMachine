@@ -10,5 +10,6 @@ class Dispenser : public IDispenser
 public:
     void GiveItem(int slotIndex) override;
 };
+using DispenserShp = QSharedPointer<Dispenser>;
 
 #endif // DISPENSER_H

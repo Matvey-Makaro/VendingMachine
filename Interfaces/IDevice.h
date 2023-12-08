@@ -2,6 +2,8 @@
 
 #include <QObject>
 
+#include <QSharedPointer>
+
 class IDevice : public QObject
 {
     Q_OBJECT
@@ -12,3 +14,4 @@ public:
 signals:
     void ErrorOccured(int);
 };
+using IDeviceShp = QSharedPointer<IDevice>;

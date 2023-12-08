@@ -19,5 +19,6 @@ private:
     CardReaderWidget _widget;
     MoneyAmount _price = 0;
 };
+using CardReaderShp = QSharedPointer<CardReader>;
 
 #endif // CARDREADER_H

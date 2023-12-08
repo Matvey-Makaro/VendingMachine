@@ -8,3 +8,4 @@ class IDispenser : public IDevice
 public:
     virtual void GiveItem(int slotIndex) = 0;
 };
+using IDispenserShp = QSharedPointer<IDispenser>;
