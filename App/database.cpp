@@ -57,12 +57,26 @@ void Database::setAllSlots(const QList<Slot> &slotsData)
 
 Slot Database::getSlot(int id)
 {
+    QSqlQuery q(QString("select name, price_kopecks, count from slots where id = %1;").arg(id));
+    q.next();
+    QString name = q.value(0).toString();
+    MoneyAmount priceKopecks = q.value(1).toInt();
+    int count = q.value(2).toInt();
 
+    return Slot { id, Item(name, priceKopecks), count };
 }
 
 void Database::setSlot(const Slot &s)
 {
+    QSqlQuery q;
 
+    if (_execShowError(q, QString("update slots set name = '%1', price_kopecks = %2, count = %3 where id = %4")
+                       .arg(s.item.GetName()).arg(s.item.GetMoneyAmount()).arg(s.count).arg(s.id)))
+    {
+        _execShowError(q, QString("insert into slots (id, name, price_kopecks, count)"
+                                  "values (%1, '%2', %3, %4);")
+                               .arg(s.id).arg(s.item.GetName()).arg(s.item.GetMoneyAmount()).arg(s.count));
+    }
 }
 
 bool Database::_execShowError(QSqlQuery &q, const QString &queryStr)
