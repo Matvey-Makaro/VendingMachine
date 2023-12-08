@@ -18,14 +18,18 @@ int main(int argc, char *argv[])
     // db test
     QString dbFile = "app.db";
     Database db(dbFile);
-    db.setBalance(70);
-    qDebug() << db.getBalance() << " = BALANCE";
+//    db.setBalance(70);
+//    qDebug() << db.getBalance() << " = BALANCE";
 
 //    db.setAllSlots({ Slot { 1, Item("pen", 10), 20 }, Slot { 2, Item("pen2", 15), 20 } });
-    Slot s = db.getSlot(2);
-    qDebug() << "slot 2: " << s.item.GetName();
+//    Slot s = db.getSlot(2);
+//    qDebug() << "slot 2: " << s.item.GetName();
 
-    db.setSlot(Slot { 3, Item("name", 1000), 500 });
+//    db.setSlot(Slot { 3, Item("name", 1000), 500 });
+
+    db.setCoinCount(50, 2);
+    db.setCoinCount(50, 3);
+    db.setCoinCount(100, 1);
     //
 
     AppConfigurator configurator(cfg);

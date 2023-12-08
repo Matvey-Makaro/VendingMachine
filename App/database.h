@@ -24,6 +24,9 @@ public:
     Slot getSlot(int id);
     void setSlot(const Slot& s);
 
+    void setCoinCount(int value, int count);
+    int getCoinCount(int value);
+
 private:
     bool _execShowError(QSqlQuery& q, const QString& queryStr);
 
