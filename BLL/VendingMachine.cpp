@@ -121,8 +121,9 @@ void VendingMachine::OnOkButtonClicked()
         _devices->InfoOutputter->Output(Messages::EnterItemNumber);
         return;
     }
+
     int itemIndex = _numpadDisplayText.toInt() - 1;
-    if(itemIndex < 0  || itemIndex >= _items.size())
+    if(itemIndex < 0 || itemIndex >= _items.size())
     {
         _devices->InfoOutputter->Output(Messages::EnterValidItemNumber);
         return;

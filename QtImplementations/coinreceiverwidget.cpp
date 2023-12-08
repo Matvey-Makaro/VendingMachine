@@ -6,6 +6,8 @@ CoinReceiverWidget::CoinReceiverWidget(QWidget *parent) :
     ui(new Ui::CoinReceiverWidget)
 {
     ui->setupUi(this);
+
+    move(100, 0);
 }
 
 CoinReceiverWidget::~CoinReceiverWidget()
