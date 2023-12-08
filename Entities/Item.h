@@ -14,8 +14,12 @@ public:
     MoneyAmount GetMoneyAmount() const;
     void SetMoneyAmount(const MoneyAmount& price);
 
+    bool IsAvailable() const;
+    void SetIsAvailable(bool isAvailable);
+
 private:
     QString _name;
     MoneyAmount _price;
+    bool _isAvailable;
 };
 

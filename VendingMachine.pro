@@ -2,7 +2,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++20
+CONFIG += c++17
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -17,6 +17,7 @@ SOURCES += \
     Entities/Banknote.cpp \
     Entities/Coin.cpp \
     Entities/Item.cpp \
+    QtImplementations/InfoOutputter.cpp \
     QtImplementations/banknotereceiver.cpp \
     QtImplementations/banknotereceiverwidget.cpp \
     QtImplementations/cardreader.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
     Entities/Banknote.h \
     Entities/Coin.h \
     Entities/Item.h \
+    Entities/Messages.h \
     Interfaces/IBanknoteReceiver.h \
     Interfaces/ICardReader.h \
     Interfaces/IChangeDispenser.h \
@@ -47,8 +49,10 @@ HEADERS += \
     Interfaces/IDevice.h \
     Interfaces/IDispenser.h \
     Interfaces/IDisplay.h \
+    Interfaces/IInfoOutputter.h \
     Interfaces/INumpad.h \
     MainWindow.h \
+    QtImplementations/InfoOutputter.h \
     QtImplementations/banknotereceiver.h \
     QtImplementations/banknotereceiverwidget.h \
     QtImplementations/cardreader.h \

@@ -10,6 +10,7 @@
 #include "QtImplementations/banknotereceiver.h"
 #include "QtImplementations/changedispenser.h"
 #include "QtImplementations/cardreader.h"
+#include "QtImplementations/InfoOutputter.h"
 
 #include "AppConfig.h"
 

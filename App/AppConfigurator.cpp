@@ -24,6 +24,7 @@ VendingMachineDevicesShp AppConfigurator::CreateDevices()
         devices->ItemDisplays.push_back(DisplayShp::create());
     }
     devices->Numpad = NumpadShp::create();
+    devices->InfoOutputter = InfoOutputterShp::create();
 
     return devices;
 }

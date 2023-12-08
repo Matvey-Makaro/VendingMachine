@@ -9,6 +9,7 @@
 #include "Interfaces/IDispenser.h"
 #include "Interfaces/IDisplay.h"
 #include "Interfaces/INumpad.h"
+#include "Interfaces/IInfoOutputter.h"
 
 struct VendingMachineDevices
 {
@@ -20,5 +21,6 @@ struct VendingMachineDevices
     IDisplayShp NumpadDisplay;
     QVector<IDisplayShp> ItemDisplays;
     INumpadShp Numpad;
+    IInfoOutputterShp InfoOutputter;
 };
 using VendingMachineDevicesShp = QSharedPointer<VendingMachineDevices>;
