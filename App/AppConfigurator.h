@@ -20,11 +20,12 @@ public:
     AppConfigurator(AppConfigShp cfg);
     void Run();
 
-private:
-    VendingMachineDevicesShp CreateDevices();
+protected:
+    virtual VendingMachineDevicesShp CreateDevices();
+
+    AppConfigShp _cfg;
 
 private:
-    AppConfigShp _cfg;
     VendingMachineShp _machine;
 };
 

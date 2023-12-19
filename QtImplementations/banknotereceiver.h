@@ -12,6 +12,8 @@ class BanknoteReceiver : public IBanknoteReceiver
 public:
     BanknoteReceiver(QWidget* parent = nullptr);
 
+    BanknoteReceiverWidget* GetWidget() { return &_widget; }
+
 private:
     BanknoteReceiverWidget _widget;
 };

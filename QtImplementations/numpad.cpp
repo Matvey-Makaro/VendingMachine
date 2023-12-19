@@ -11,3 +11,8 @@ void Numpad::onNumpadWidgetButtonClicked(Buttons btn)
 {
     emit ButtonClicked(btn);
 }
+
+NumpadWidget* Numpad::GetNumpadWidget()
+{
+    return &_numpadWidget;
+}

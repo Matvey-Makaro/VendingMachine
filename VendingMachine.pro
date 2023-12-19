@@ -13,6 +13,8 @@ SOURCES += \
     App/AppConfigReader.cpp \
     App/AppConfigurator.cpp \
     App/database.cpp \
+    AppQt/MainWindow.cpp \
+    AppQt/appconfiguratorqt.cpp \
     BLL/VendingMachine.cpp \
     BLL/VendingMachineDevices.cpp \
     Entities/Banknote.cpp \
@@ -30,7 +32,6 @@ SOURCES += \
     QtImplementations/display.cpp \
     QtImplementations/numpad.cpp \
     main.cpp \
-    MainWindow.cpp \
     QtImplementations/numpadwidget.cpp
 
 HEADERS += \
@@ -38,6 +39,9 @@ HEADERS += \
     App/AppConfigReader.h \
     App/AppConfigurator.h \
     App/database.h \
+    AppQt/MainWindow.h \
+    AppQt/appconfiguratorqt.h \
+    AppQt/tmp.h \
     BLL/VendingMachine.h \
     BLL/VendingMachineDevices.h \
     Entities/Banknote.h \
@@ -54,7 +58,6 @@ HEADERS += \
     Interfaces/IDisplay.h \
     Interfaces/IInfoOutputter.h \
     Interfaces/INumpad.h \
-    MainWindow.h \
     QtImplementations/InfoOutputter.h \
     QtImplementations/banknotereceiver.h \
     QtImplementations/banknotereceiverwidget.h \
@@ -70,7 +73,7 @@ HEADERS += \
     QtImplementations/numpadwidget.h
 
 FORMS += \
-    MainWindow.ui \
+    AppQt/MainWindow.ui \
     QtImplementations/banknotereceiverwidget.ui \
     QtImplementations/cardreaderwidget.ui \
     QtImplementations/coinreceiverwidget.ui \

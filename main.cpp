@@ -2,10 +2,12 @@
 #include "App/AppConfigReader.h"
 #include "App/database.h"
 
-#include "MainWindow.h"
 #include "QtImplementations/display.h"
 
+#include "AppQt/appconfiguratorqt.h"
+
 #include <QApplication>
+#include <QScopedPointer>
 
 int main(int argc, char *argv[])
 {
@@ -27,21 +29,21 @@ int main(int argc, char *argv[])
 
 //    db.setSlot(Slot { 3, Item("name", 1000), 500 });
 
-    db.setCoinCount(50, 2);
-    db.setCoinCount(50, 3);
-    db.setCoinCount(100, 1);
+//    db.setCoinCount(50, 2);
+//    db.setCoinCount(50, 3);
+//    db.setCoinCount(100, 1);
 
-    qDebug() << "50 value coins: " << db.getCoinCount(50);
+//    qDebug() << "50 value coins: " << db.getCoinCount(50);
 
-    db.setBanknoteCount(500, 2);
-    db.setBanknoteCount(500, 3);
-    db.setBanknoteCount(1000, 1);
+//    db.setBanknoteCount(500, 2);
+//    db.setBanknoteCount(500, 3);
+//    db.setBanknoteCount(1000, 1);
 
-    qDebug() << "5 rubles: " << db.getBanknoteCount(500);
+//    qDebug() << "5 rubles: " << db.getBanknoteCount(500);
     //
 
-    AppConfigurator configurator(cfg);
-    configurator.Run();
+    QScopedPointer<AppConfigurator> configurator(new AppConfiguratorQt(cfg));
+    configurator->Run();
 
 //    MainWindow w;
 //    w.show();

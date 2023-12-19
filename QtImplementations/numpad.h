@@ -11,6 +11,8 @@ class Numpad : public INumpad
 public:
     Numpad(QWidget* parent = nullptr);
 
+    NumpadWidget* GetNumpadWidget();
+
 private slots:
     void onNumpadWidgetButtonClicked(Buttons btn);
 

@@ -10,7 +10,6 @@ NumpadWidget::NumpadWidget(QWidget *parent) :
     ui(new Ui::NumpadWidget)
 {
     ui->setupUi(this);
-    move(200, 0);
 }
 
 NumpadWidget::~NumpadWidget()

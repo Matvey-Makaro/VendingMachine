@@ -8,8 +8,6 @@ BanknoteReceiverWidget::BanknoteReceiverWidget(QWidget *parent) :
     ui(new Ui::BanknoteReceiverWidget)
 {
     ui->setupUi(this);
-
-    move(-100, 0);
 }
 
 BanknoteReceiverWidget::~BanknoteReceiverWidget()

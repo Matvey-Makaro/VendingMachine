@@ -11,6 +11,8 @@ class CoinReceiver : public ICoinReceiver
 public:
     CoinReceiver(QWidget* parent = nullptr);
 
+    CoinReceiverWidget* GetWidget() { return &_coinRecWidget; }
+
 private:
     CoinReceiverWidget _coinRecWidget;
 };

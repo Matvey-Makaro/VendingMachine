@@ -15,6 +15,8 @@ public:
     void SetPrice(MoneyAmount price) override { _price = price; _widget.SetPrice(price); }
     void Cancel() override { _widget.Cancel(); }
 
+    CardReaderWidget* GetWidget() { return &_widget; }
+
 private:
     CardReaderWidget _widget;
     MoneyAmount _price = 0;
