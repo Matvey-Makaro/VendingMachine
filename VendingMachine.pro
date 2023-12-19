@@ -49,6 +49,7 @@ HEADERS += \
     Entities/Item.h \
     Entities/Slot.h \
     Entities/Messages.h \
+    Entities/StatisticItem.h \
     Interfaces/IBanknoteReceiver.h \
     Interfaces/ICardReader.h \
     Interfaces/IChangeDispenser.h \

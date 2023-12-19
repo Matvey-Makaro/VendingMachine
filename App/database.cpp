@@ -55,13 +55,15 @@ void Database::setAllSlots(const QList<Slot> &slotsData)
 
 Slot Database::getSlot(int id)
 {
-    QSqlQuery q(QString("select name, price_kopecks, count from slots where id = %1;").arg(id));
+    QSqlQuery q(QString("select name, price_kopecks, count, blocked, sold from slots where id = %1;").arg(id));
     q.next();
     QString name = q.value(0).toString();
     MoneyAmount priceKopecks = q.value(1).toInt();
     int count = q.value(2).toInt();
     bool blocked = q.value(3).toBool();
     int sold = q.value(4).toInt();
+
+    qDebug() << id << "\n";
 
     return Slot { id, Item(name, priceKopecks), count, blocked, sold };
 }
@@ -71,14 +73,68 @@ void Database::setSlot(const Slot &s)
     QSqlQuery q;
 
     if (_execShowError(q, QString("update slots set name = '%1', price_kopecks = %2, count = %3, "
-                                  "blocked = %4, sold = %5 where id = %6")
+                                  "blocked = %4, sold = %5, id = %6 where id = %7")
                        .arg(s.item.GetName()).arg(s.item.GetMoneyAmount()).arg(s.count)
-                       .arg(s.blocked).arg(s.sold).arg(s.id)))
+                       .arg(s.blocked).arg(s.sold).arg(s.id).arg(s.id)))
     {
         _execShowError(q, QString("insert into slots (id, name, price_kopecks, count, blocked, sold)"
                                   "values (%1, '%2', %3, %4, %5, %6);")
                                .arg(s.id).arg(s.item.GetName()).arg(s.item.GetMoneyAmount()).arg(s.count).arg(s.blocked).arg(s.sold));
     }
+}
+
+void Database::setItem(QString name, int priceKopecks, int slotNum)
+{
+    Slot prev = getSlot(slotNum);  // предыдущие данные
+
+    Slot s;
+    s.id = slotNum;
+    s.item = Item(name, priceKopecks);
+    s.blocked = prev.blocked;
+    s.count = prev.count;
+    s.sold = prev.sold;
+
+    setSlot(s);
+}
+
+void Database::setItemPrice(QString name, int newPriceKopecks)
+{
+    Slot s = getSlot(getSlotNumberByItemName(name));
+    s.item.SetMoneyAmount(newPriceKopecks);
+    setSlot(s);
+}
+
+int Database::getSlotNumberByItemName(QString name)
+{
+    QSqlQuery q(QString("select id from slots where name = '%1';").arg(name));
+    q.next();
+    return q.value(0).toInt();
+}
+
+void Database::setItemSlot(QString name, int slot)
+{
+    QSqlQuery q;
+    _execShowError(q, QString("update slots set id = %1 where name = '%2'")
+                           .arg(slot).arg(name));
+}
+
+void Database::deleteItem(QString name)
+{
+    QSqlQuery q;
+    _execShowError(q, QString("delete from slots where name = '%1'")
+                   .arg(name));
+}
+
+void Database::blockItem(QString name)
+{
+    QSqlQuery q;
+    _execShowError(q, QString("update slots set blocked = true where name = '%1'").arg(name));
+}
+
+void Database::unblockItem(QString name)
+{
+    QSqlQuery q;
+    _execShowError(q, QString("update slots set blocked = false where name = '%1'").arg(name));
 }
 
 void Database::setCoinCount(int value, int count)
@@ -121,6 +177,23 @@ int Database::getBanknoteCount(int value)
     q.next();
 
     return q.value(0).toInt();
+}
+
+std::vector<StatisticItem> Database::getStatistic()
+{
+    std::vector<StatisticItem> items;
+
+    QSqlQuery q("select name, sold from slots;");
+
+    while (q.next())
+    {
+        StatisticItem newItem;
+        newItem.item = q.value(0).toString();
+        newItem.numOfSales = q.value(1).toInt();
+        items.push_back(newItem);
+    }
+
+    return items;
 }
 
 bool Database::_execShowError(QSqlQuery &q, const QString &queryStr)

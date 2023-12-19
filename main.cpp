@@ -21,7 +21,22 @@ int main(int argc, char *argv[])
     QString dbFile = "app.db";
     Database db(dbFile);
 
-    db.setSlot(Slot { 1, Item("pen", 10), 20, true, 10 } );
+    auto statistic = db.getStatistic();
+    for (auto s : statistic)
+    {
+        qDebug() << s.item << s.numOfSales;
+    }
+//    db.setSlot(Slot { 2, Item("pen2", 50), 20, true, 10 } );
+//    db.unblockItem("pen");
+//    db.setItemSlot("piter pen", 3);
+//    db.deleteItem("piter pen");
+//    db.setItemPrice("piter pen", 100);
+
+//    Slot s = db.getSlot(db.getSlotNumberByItemName("piter pen"));
+//    qDebug() << s.item.GetName() << s.item.GetMoneyAmount() << "\n";
+//    db.setSlot(Slot { 1, Item("pen", 10), 20, true, 10 } );
+
+//    db.setItem("piter pen", 30, 1);
     //
 
 //    db.setBalance(70);
