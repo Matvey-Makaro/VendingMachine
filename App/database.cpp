@@ -49,9 +49,7 @@ void Database::setAllSlots(const QList<Slot> &slotsData)
 
     for (const auto& s : slotsData)
     {
-        _execShowError(q, QString("insert into slots (id, name, price_kopecks, count)"
-                                  "values (%1, '%2', %3, %4);")
-                       .arg(s.id).arg(s.item.GetName()).arg(s.item.GetMoneyAmount()).arg(s.count));
+        setSlot(s);
     }
 }
 
@@ -62,20 +60,24 @@ Slot Database::getSlot(int id)
     QString name = q.value(0).toString();
     MoneyAmount priceKopecks = q.value(1).toInt();
     int count = q.value(2).toInt();
+    bool blocked = q.value(3).toBool();
+    int sold = q.value(4).toInt();
 
-    return Slot { id, Item(name, priceKopecks), count };
+    return Slot { id, Item(name, priceKopecks), count, blocked, sold };
 }
 
 void Database::setSlot(const Slot &s)
 {
     QSqlQuery q;
 
-    if (_execShowError(q, QString("update slots set name = '%1', price_kopecks = %2, count = %3 where id = %4")
-                       .arg(s.item.GetName()).arg(s.item.GetMoneyAmount()).arg(s.count).arg(s.id)))
+    if (_execShowError(q, QString("update slots set name = '%1', price_kopecks = %2, count = %3, "
+                                  "blocked = %4, sold = %5 where id = %6")
+                       .arg(s.item.GetName()).arg(s.item.GetMoneyAmount()).arg(s.count)
+                       .arg(s.blocked).arg(s.sold).arg(s.id)))
     {
-        _execShowError(q, QString("insert into slots (id, name, price_kopecks, count)"
-                                  "values (%1, '%2', %3, %4);")
-                               .arg(s.id).arg(s.item.GetName()).arg(s.item.GetMoneyAmount()).arg(s.count));
+        _execShowError(q, QString("insert into slots (id, name, price_kopecks, count, blocked, sold)"
+                                  "values (%1, '%2', %3, %4, %5, %6);")
+                               .arg(s.id).arg(s.item.GetName()).arg(s.item.GetMoneyAmount()).arg(s.count).arg(s.blocked).arg(s.sold));
     }
 }
 
@@ -142,7 +144,8 @@ void Database::_createTablesIfNotExist()
     // получить все монеты
     // Банкноты: то же самое
 
-    QSqlQuery("create table slots (id int primary key not null, name text, price_kopecks int, count int);");
+    QSqlQuery("create table slots (id int primary key not null, name text, "
+              "price_kopecks int, count int, blocked boolean, sold int);");
     QSqlQuery("create table balance (id int primary key not null, value_kopecks int);");
     QSqlQuery("create table coins ("
               "value int primary key not null, "

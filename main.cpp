@@ -20,6 +20,8 @@ int main(int argc, char *argv[])
     // db test
     QString dbFile = "app.db";
     Database db(dbFile);
+
+    db.setSlot(Slot { 1, Item("pen", 10), 20, true, 10 } );
     //
 
 //    db.setBalance(70);
