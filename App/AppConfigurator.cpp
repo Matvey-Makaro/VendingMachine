@@ -1,7 +1,7 @@
 #include "AppConfigurator.h"
 
 AppConfigurator::AppConfigurator(AppConfigShp cfg) :
-    _cfg(std::move(cfg))
+    _cfg(std::move(cfg)), _db("app.db")
 {}
 
 void AppConfigurator::Run()

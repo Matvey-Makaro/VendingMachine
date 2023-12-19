@@ -9,6 +9,8 @@
 
 #include "VendingMachineDevices.h"
 
+#include "App/database.h"
+
 #include "Entities/Banknote.h"
 #include "Entities/Coin.h"
 #include "Entities/Item.h"
@@ -23,8 +25,7 @@ class VendingMachine : public QObject
     using MoneyAmountToCoinCountOpt = std::optional<MoneyAmountToCoinCount>;
 public:
     // TODO: Инициализировать корректно в конструкторе
-    explicit VendingMachine(VendingMachineDevicesShp devices, QObject *parent = nullptr);
-
+    explicit VendingMachine(VendingMachineDevicesShp devices, Database& db, QObject *parent = nullptr);
 
 private slots:
     void OnBanknoteReceived(const Banknote& banknote);
@@ -47,6 +48,8 @@ private:
     MoneyAmountToCoinCountOpt CalculateChange(MoneyAmount change);
 
 private:
+    Database& _db;
+
     VendingMachineDevicesShp _devices;
 
     MoneyAmount _currMoneyAmount;
@@ -54,7 +57,8 @@ private:
     std::map<MoneyAmount, CoinVec> _coins;
 
     QString _numpadDisplayText;
-    QVector<Item> _items;
+//    QVector<Item> _items;
+    QVector<Slot> _slots;
 
     bool _isCardReaderEnabled = false;
     int _lastItemIndex = 0;

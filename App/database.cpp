@@ -53,6 +53,27 @@ void Database::setAllSlots(const QList<Slot> &slotsData)
     }
 }
 
+QVector<Slot> Database::getAllSlots()
+{
+    QSqlQuery q("select id, name, price_kopecks, count, blocked, sold from slots;");
+
+    QVector<Slot> allSlots;
+
+    while (q.next())
+    {
+        int id = q.value(0).toInt();
+        QString name = q.value(1).toString();
+        MoneyAmount priceKopecks = q.value(2).toInt();
+        int count = q.value(3).toInt();
+        bool blocked = q.value(4).toBool();
+        int sold = q.value(5).toInt();
+
+        allSlots.push_back(Slot { id, Item(name, priceKopecks), count, blocked, sold });
+    }
+
+    return allSlots;
+}
+
 Slot Database::getSlot(int id)
 {
     QSqlQuery q(QString("select name, price_kopecks, count, blocked, sold from slots where id = %1;").arg(id));
@@ -219,13 +240,28 @@ void Database::_createTablesIfNotExist()
 
     QSqlQuery("create table slots (id int primary key not null, name text, "
               "price_kopecks int, count int, blocked boolean, sold int);");
+
     QSqlQuery("create table balance (id int primary key not null, value_kopecks int);");
+    QSqlQuery("insert into balance (id, value_kopecks) values (1, 0);");
+
     QSqlQuery("create table coins ("
               "value int primary key not null, "
               "count int "
               ");");
+    QSqlQuery("insert into coins (value, count) values (1, 0);");
+    QSqlQuery("insert into coins (value, count) values (2, 0);");
+    QSqlQuery("insert into coins (value, count) values (5, 0);");
+    QSqlQuery("insert into coins (value, count) values (10, 0);");
+    QSqlQuery("insert into coins (value, count) values (20, 0);");
+    QSqlQuery("insert into coins (value, count) values (50, 0);");
+    QSqlQuery("insert into coins (value, count) values (100, 0);");
+    QSqlQuery("insert into coins (value, count) values (200, 0);");
+
     QSqlQuery("create table banknotes ("
               "value int primary key not null, "
               "count int "
               ");");
+    QSqlQuery("insert into banknotes (value, count) values (500, 0);");
+    QSqlQuery("insert into banknotes (value, count) values (1000, 0);");
+    QSqlQuery("insert into banknotes (value, count) values (2000, 0);");
 }

@@ -18,14 +18,8 @@ int main(int argc, char *argv[])
     auto cfg = reader.Read(cfgName);
 
     // db test
-    QString dbFile = "app.db";
-    Database db(dbFile);
+//    Database ;
 
-    auto statistic = db.getStatistic();
-    for (auto s : statistic)
-    {
-        qDebug() << s.item << s.numOfSales;
-    }
 //    db.setSlot(Slot { 2, Item("pen2", 50), 20, true, 10 } );
 //    db.unblockItem("pen");
 //    db.setItemSlot("piter pen", 3);

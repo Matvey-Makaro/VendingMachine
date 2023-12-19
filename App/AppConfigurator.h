@@ -27,5 +27,6 @@ protected:
 
 private:
     VendingMachineShp _machine;
+    Database _db;
 };
 

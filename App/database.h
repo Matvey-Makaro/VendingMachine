@@ -22,6 +22,8 @@ public:
     MoneyAmount getBalance();
 
     void setAllSlots(const QList<Slot>& slotsData);
+    QVector<Slot> getAllSlots();
+
     Slot getSlot(int id);
     void setSlot(const Slot& s);
     void setItem(QString name, int priceKopecks, int slotNum);
@@ -39,6 +41,7 @@ public:
     int getBanknoteCount(int value);
 
     std::vector<StatisticItem> getStatistic();
+
 
 private:
 

@@ -35,10 +35,11 @@ namespace
     }
 }
 
-VendingMachine::VendingMachine(VendingMachineDevicesShp devices, QObject *parent) :
+VendingMachine::VendingMachine(VendingMachineDevicesShp devices, Database& db, QObject *parent) :
     QObject(parent),
     _devices(std::move(devices)),
-    _currMoneyAmount(0)
+    _currMoneyAmount(0),
+    _db(db)
 {
     connect(_devices->BanknoteReceiver.data(), &IBanknoteReceiver::BanknoteReceived,
             this, &VendingMachine::OnBanknoteReceived);
@@ -51,13 +52,30 @@ VendingMachine::VendingMachine(VendingMachineDevicesShp devices, QObject *parent
     connect(_devices->CardReader.data(), &ICardReader::Paid,
             this, &VendingMachine::OnCardReaderPaid);
 
+    std::vector<int> coinNoms = { 1, 2, 5, 10, 20, 50, 100, 200 };
+    std::vector<int> banknoteNoms = { 500, 1000, 2000 };
+    for (int nom : coinNoms)
+    {
+        int numCoinsCurrNom = _db.getCoinCount(nom);
+        _coins[nom].insert(_coins[nom].end(), numCoinsCurrNom, Coin(nom));
+    }
+    for (int nom : banknoteNoms)
+    {
+        int numBanknotesCurrNom = _db.getBanknoteCount(nom);
+        _banknotes[nom].insert(_banknotes[nom].end(), numBanknotesCurrNom, Banknote(nom));
+    }
+    // прочитать баланс
+    SetCurrMoneyAmount(_db.getBalance());
+
+    // прочитать слоты
+    _slots = _db.getAllSlots();
+
     InitItemDisplays();
     UpdateNumpadDisplay();
 }
 
 void VendingMachine::OnBanknoteReceived(const Banknote& banknote)
 {
-    qDebug() << "VendingMachine::OnBanknoteReceived()";
     AddBanknote(banknote);
     SetCurrMoneyAmount(_currMoneyAmount + banknote.GetValKopecks());
 }
@@ -70,7 +88,7 @@ void VendingMachine::OnCoinReceived(const Coin& coin)
 
 void VendingMachine::OnButtonClicked(Buttons button)
 {
-    if(button == Buttons::OK)
+    if (button == Buttons::OK)
     {
         OnOkButtonClicked();
     }
@@ -101,17 +119,22 @@ void VendingMachine::OnCardReaderPaid()
 {
     _isCardReaderEnabled = false;
     _devices->Dispenser->GiveItem(_lastItemIndex);
+
     _devices->InfoOutputter->Output(Messages::GetItem);
 }
 
 void VendingMachine::AddBanknote(const Banknote& banknote)
 {
     _banknotes[banknote.GetValKopecks()].push_back(banknote);
+    int prevCount = _db.getBanknoteCount(banknote.GetValKopecks());
+    _db.setBanknoteCount(banknote.GetValKopecks(), prevCount + 1);
 }
 
 void VendingMachine::AddCoin(const Coin& coin)
 {
     _coins[coin.GetValKopecks()].push_back(coin);
+    int prevCount = _db.getCoinCount(coin.GetValKopecks());
+    _db.setCoinCount(coin.GetValKopecks(), prevCount + 1);
 }
 
 void VendingMachine::OnOkButtonClicked()
@@ -123,14 +146,14 @@ void VendingMachine::OnOkButtonClicked()
     }
 
     int itemIndex = _numpadDisplayText.toInt() - 1;
-    if(itemIndex < 0 || itemIndex >= _items.size())
+    if(itemIndex < 0 || itemIndex >= _slots.size())
     {
         _devices->InfoOutputter->Output(Messages::EnterValidItemNumber);
         return;
     }
 
-    const auto& item = _items[itemIndex];
-    if(!item.IsAvailable())
+    const auto& slot = _slots[itemIndex];
+    if(!slot.item.IsAvailable())
     {
         _devices->InfoOutputter->Output(Messages::ProductIsTemporarilyUnavailable);
         return;
@@ -139,32 +162,33 @@ void VendingMachine::OnOkButtonClicked()
     _lastItemIndex = itemIndex;
     if(_isCardReaderEnabled)
     {
-        _devices->CardReader->SetPrice(item.GetMoneyAmount());
+        _devices->CardReader->SetPrice(slot.item.GetMoneyAmount());
         return;
     }
 
-    if(item.GetMoneyAmount() > _currMoneyAmount)
+    if(slot.item.GetMoneyAmount() > _currMoneyAmount)
     {
         _devices->InfoOutputter->Output(Messages::NotEnoughCash);
         return;
     }
 
-    auto change = CalculateChange(_currMoneyAmount - item.GetMoneyAmount());
+    auto change = CalculateChange(_currMoneyAmount - slot.item.GetMoneyAmount());
     if(!change)
     {
         _devices->InfoOutputter->Output(Messages::CanNotGetChange);
         return;
     }
 
-    SetCurrMoneyAmount(_currMoneyAmount - item.GetMoneyAmount());
+    SetCurrMoneyAmount(_currMoneyAmount - slot.item.GetMoneyAmount());
     _devices->Dispenser->GiveItem(itemIndex);
+
     _devices->InfoOutputter->Output(Messages::GetItem);
 }
 
 void VendingMachine::OnChangeButtonClicked()
 {
     auto change = CalculateChange(_currMoneyAmount);
-    if(!change)
+    if (!change)
     {
         _devices->InfoOutputter->Output(Messages::CanNotGetChange);
         return;
@@ -174,6 +198,10 @@ void VendingMachine::OnChangeButtonClicked()
         for(int i = 0; i < coinCount; i++)
         {
             _devices->ChangeDispenser->GiveCoin(amount);
+
+            int prevCoinCount = _db.getCoinCount(amount);
+            _db.setCoinCount(amount, prevCoinCount);
+
             _coins[amount].pop_back();
         }
     }
@@ -185,8 +213,9 @@ void VendingMachine::InitItemDisplays()
     auto& itemDisplays = _devices->ItemDisplays;
     for(int i = 0; i < itemDisplays.size(); i++)
     {
-        Item item("Item" + QString::number(i + 1), (i + 1) * 10);
-        _items.push_back(item);
+        Item item = _slots[i].item;
+//        Item item("Item" + QString::number(i + 1), (i + 1) * 10);
+//        _items.push_back(item);
 
         QString text = item.GetName() + "\n";
         text += QString::number(item.GetMoneyAmount()) + "коп.";
@@ -197,6 +226,7 @@ void VendingMachine::InitItemDisplays()
 void VendingMachine::SetCurrMoneyAmount(MoneyAmount moneyAmount)
 {
     _currMoneyAmount = moneyAmount;
+    _db.setBalance(moneyAmount);
     UpdateNumpadDisplay();
 }
 
@@ -229,6 +259,3 @@ VendingMachine::MoneyAmountToCoinCountOpt VendingMachine::CalculateChange(MoneyA
         return std::nullopt;
     return result;
 }
-
-
-
