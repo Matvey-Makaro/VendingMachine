@@ -6,6 +6,6 @@ AppConfigShp AppConfigReader::Read(const QString& fname)
     auto cfg = AppConfigShp::create();
     cfg->serverHost = "local";
     cfg->serverPort = 8000;
-    cfg->numOfItemDisplayes = 5;
+    cfg->numOfItemDisplayes = 10;
     return cfg;
 }

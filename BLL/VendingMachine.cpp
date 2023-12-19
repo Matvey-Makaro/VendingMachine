@@ -216,7 +216,7 @@ void VendingMachine::OnChangeButtonClicked()
 void VendingMachine::InitItemDisplays()
 {
     auto& itemDisplays = _devices->ItemDisplays;
-    for(int i = 0; i < itemDisplays.size(); i++)
+    for(int i = 0; i < _slots.size(); i++)
     {
         Item item = _slots[i].item;
 //        Item item("Item" + QString::number(i + 1), (i + 1) * 10);
@@ -224,7 +224,7 @@ void VendingMachine::InitItemDisplays()
 
         QString text = item.GetName() + "\n";
         text += QString::number(item.GetMoneyAmount()) + "коп.";
-        itemDisplays[i]->SetText(text);
+        itemDisplays[_slots[i].id - 1]->SetText(text);
     }
 }
 
