@@ -157,8 +157,8 @@ void VendingMachine::OnOkButtonClicked()
         return;
     }
 
-    const auto& slot = _slots[itemIndex];
-    if(!slot.item.IsAvailable())
+    auto& slot = _slots[itemIndex];
+    if (slot.blocked)
     {
         _devices->InfoOutputter->Output(Messages::ProductIsTemporarilyUnavailable);
         return;
@@ -171,7 +171,7 @@ void VendingMachine::OnOkButtonClicked()
         return;
     }
 
-    if(slot.item.GetMoneyAmount() > _currMoneyAmount)
+    if (slot.item.GetMoneyAmount() > _currMoneyAmount)
     {
         _devices->InfoOutputter->Output(Messages::NotEnoughCash);
         return;
@@ -184,9 +184,18 @@ void VendingMachine::OnOkButtonClicked()
         return;
     }
 
-    SetCurrMoneyAmount(_currMoneyAmount - slot.item.GetMoneyAmount());
-    _devices->Dispenser->GiveItem(itemIndex);
+    slot.count--;
+    if (slot.count < 0)
+    {
+        slot.count = 0;
+        _devices->InfoOutputter->Output(Messages::ProductIsTemporarilyUnavailable);
+        return;
+    }
 
+    // продать
+    SetCurrMoneyAmount(_currMoneyAmount - slot.item.GetMoneyAmount());
+    _db.setSlot(slot);
+    _devices->Dispenser->GiveItem(itemIndex);
     _devices->InfoOutputter->Output(Messages::GetItem);
 }
 
@@ -205,7 +214,7 @@ void VendingMachine::OnChangeButtonClicked()
             _devices->ChangeDispenser->GiveCoin(amount);
 
             int prevCoinCount = _db.getCoinCount(amount);
-            _db.setCoinCount(amount, prevCoinCount);
+            _db.setCoinCount(amount, prevCoinCount - 1);
 
             _coins[amount].pop_back();
         }
