@@ -15,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    setFixedSize(size());
 //    IDisplay* display = new Display();
 //    display->SetText("hello world");
 
