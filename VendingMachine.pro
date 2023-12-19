@@ -1,4 +1,4 @@
-QT       += core gui sql
+QT       += core gui sql network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -15,6 +15,7 @@ SOURCES += \
     App/database.cpp \
     AppQt/MainWindow.cpp \
     AppQt/appconfiguratorqt.cpp \
+    BLL/ServerGateway.cpp \
     BLL/VendingMachine.cpp \
     BLL/VendingMachineDevices.cpp \
     Entities/Banknote.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     AppQt/MainWindow.h \
     AppQt/appconfiguratorqt.h \
     AppQt/tmp.h \
+    BLL/ServerGateway.h \
     BLL/VendingMachine.h \
     BLL/VendingMachineDevices.h \
     Entities/Banknote.h \
@@ -69,6 +71,7 @@ HEADERS += \
     QtImplementations/dispenser.h \
     QtImplementations/display.h \
     QtImplementations/numpad.h \
+    ServerCommunication/Requests.h \
     Types.h \
     QtImplementations/numpadwidget.h
 

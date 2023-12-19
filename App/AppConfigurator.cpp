@@ -7,6 +7,16 @@ AppConfigurator::AppConfigurator(AppConfigShp cfg) :
 void AppConfigurator::Run()
 {
     _machine = VendingMachineShp::create(CreateDevices());
+    _serverGateway = ServerGatewayShp::create();
+
+    _serverGateway->moveToThread(&_serverGatewayThread);
+
+    QObject::connect(_serverGateway.data(), &ServerGateway::BlockItemSignal,
+                     _machine.data(), &VendingMachine::OnBlockItem);
+    QObject::connect(&_serverGatewayThread, &QThread::started,
+                     _serverGateway.data(), &ServerGateway::Run);
+    _serverGatewayThread.start();
+
 }
 
 VendingMachineDevicesShp AppConfigurator::CreateDevices()
