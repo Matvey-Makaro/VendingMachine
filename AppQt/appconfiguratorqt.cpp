@@ -21,14 +21,23 @@ VendingMachineDevicesShp AppConfiguratorQt::CreateDevices()
 
     DisplayShp numpadDisplay = DisplayShp::create(&_mainWindow);
     devices->NumpadDisplay = numpadDisplay;
-    for(int i = 0; i < _cfg->numOfItemDisplayes; i++)
+    for (int i = 0; i < _cfg->numOfItemDisplayes; i++)
     {
-        devices->ItemDisplays.push_back(DisplayShp::create());
+        DisplayShp display = DisplayShp::create();
+        devices->ItemDisplays.push_back(display);
+
+        // XXX: надо было через vertical layout?
+        QListWidgetItem* widgetItem = new QListWidgetItem(_mainWindow.GetUi()->items_slots);
+        _mainWindow.GetUi()->items_slots->addItem(widgetItem);
+        widgetItem->setSizeHint(display->GetWidget()->size());
+        _mainWindow.GetUi()->items_slots->setItemWidget(widgetItem, display->GetWidget());
+        //
     }
     NumpadShp numpadPtr = NumpadShp::create(&_mainWindow);
     devices->Numpad = numpadPtr;
     devices->InfoOutputter = InfoOutputterShp::create();
 
+    // XXX: это надо делать через promote
     numpadPtr.get()->GetNumpadWidget()->move(_mainWindow.GetUi()->numpad->pos());
     _mainWindow.GetUi()->numpad = numpadPtr.get()->GetNumpadWidget();
 
