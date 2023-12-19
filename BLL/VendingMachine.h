@@ -7,6 +7,7 @@
 #include <map>
 #include <optional>
 
+#include "App/AppConfig.h"
 #include "VendingMachineDevices.h"
 
 #include "App/database.h"
@@ -26,6 +27,9 @@ class VendingMachine : public QObject
 public:
     // TODO: Инициализировать корректно в конструкторе
     explicit VendingMachine(VendingMachineDevicesShp devices, Database& db, QObject *parent = nullptr);
+
+public slots:
+    void OnBlockItem(QString itemName);
 
 private slots:
     void OnBanknoteReceived(const Banknote& banknote);

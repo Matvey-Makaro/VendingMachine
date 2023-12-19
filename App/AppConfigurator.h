@@ -1,7 +1,10 @@
 #pragma once
 
+#include <QThread>
+
 #include "BLL/VendingMachineDevices.h"
 #include "BLL/VendingMachine.h"
+#include "BLL/ServerGateway.h"
 
 #include "QtImplementations/display.h"
 #include "QtImplementations/numpad.h"
@@ -28,5 +31,7 @@ protected:
 private:
     VendingMachineShp _machine;
     Database _db;
+    ServerGatewayShp _serverGateway;
+    QThread _serverGatewayThread;
 };
 

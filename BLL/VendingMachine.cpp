@@ -74,6 +74,11 @@ VendingMachine::VendingMachine(VendingMachineDevicesShp devices, Database& db, Q
     UpdateNumpadDisplay();
 }
 
+void VendingMachine::OnBlockItem(QString itemName)
+{
+    qDebug() << "VendingMachine::OnBlockItem" << "Block item:" << itemName;
+}
+
 void VendingMachine::OnBanknoteReceived(const Banknote& banknote)
 {
     AddBanknote(banknote);
