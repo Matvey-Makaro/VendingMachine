@@ -20,6 +20,8 @@ int main(int argc, char *argv[])
     // db test
     QString dbFile = "app.db";
     Database db(dbFile);
+    //
+
 //    db.setBalance(70);
 //    qDebug() << db.getBalance() << " = BALANCE";
 
