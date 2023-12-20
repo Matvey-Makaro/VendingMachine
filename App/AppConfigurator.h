@@ -25,6 +25,7 @@ public:
 
 protected:
     virtual VendingMachineDevicesShp CreateDevices();
+    void MakeConnections();
 
     AppConfigShp _cfg;
 

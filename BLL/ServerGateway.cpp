@@ -9,18 +9,13 @@
 
 
 ServerGateway::ServerGateway(QObject* parent) :
-    QObject(parent)
+    QObject(parent),
+    _tcpServer(nullptr),
+    _socket(nullptr)
 {}
 
 void ServerGateway::Run()
 {
-    QTimer::singleShot(1000, this, [this]()
-    {
-        emit BlockItemSignal("Hello world");
-        QThread::sleep(2);
-        emit BlockItemSignal("End");
-    });
-
     _tcpServer = new QTcpServer(this);
     if(!_tcpServer->listen(QHostAddress::Any, 9000))
     {
@@ -28,6 +23,33 @@ void ServerGateway::Run()
     }
 
     connect(_tcpServer, &QTcpServer::newConnection, this, &ServerGateway::OnNewConnection);
+}
+
+void ServerGateway::SendStatistic(QVector<StatisticItem> statistics)
+{
+    if(_socket == nullptr)
+        return;
+
+    auto arr = ToJson(statistics);
+    _socket->write(QJsonDocument(arr).toJson());
+}
+
+void ServerGateway::SendBalance(int balance)
+{
+    if(_socket == nullptr)
+        return;
+    QJsonObject obj;
+    obj["balance"] = balance;
+    _socket->write(QJsonDocument(obj).toJson());
+}
+
+void ServerGateway::SendError(int code)
+{
+    if(_socket == nullptr)
+        return;
+    QJsonObject obj;
+    obj["code"] = code;
+    _socket->write(QJsonDocument(obj).toJson());
 }
 
 void ServerGateway::OnNewConnection()
@@ -41,13 +63,13 @@ void ServerGateway::OnNewConnection()
 void ServerGateway::OnReadyRead()
 {
     QByteArray byteArray = _socket->readAll();
+    qDebug() << "Byte array:" << byteArray;
     QJsonParseError err;
     auto doc = QJsonDocument::fromJson(byteArray, &err);
     if(err.error != QJsonParseError::NoError)
         return;
     auto obj = doc.object();
     ParseRequest(obj);
-    qDebug() << "Byte array:" << byteArray;
 }
 
 void ServerGateway::ParseRequest(const QJsonObject& obj)
@@ -188,4 +210,20 @@ void ServerGateway::HandleGetStatistic(const QJsonObject& params)
 void ServerGateway::HandleGetError(const QJsonObject& params)
 {
     emit GetErrorSignal();
+}
+
+QJsonArray ServerGateway::ToJson(const QVector<StatisticItem>& statisticItems) const
+{
+    QJsonArray arr;
+    for(const auto& i : statisticItems)
+        arr.push_back(ToJson(i));
+    return arr;
+}
+
+QJsonObject ServerGateway::ToJson(const StatisticItem& statItem) const
+{
+    QJsonObject obj;
+    obj["item"] = statItem.item;
+    obj["numOfSales"] = statItem.numOfSales;
+    return obj;
 }

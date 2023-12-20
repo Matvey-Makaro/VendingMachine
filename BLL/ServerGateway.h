@@ -3,6 +3,9 @@
 #include <QObject>
 #include <QSharedPointer>
 #include <QTcpServer>
+#include <QVector>
+#include <QJsonArray>
+#include "Entities/StatisticItem.h"
 
 class ServerGateway : public QObject
 {
@@ -24,11 +27,14 @@ signals:
 
 public slots:
     void Run();
+    void SendStatistic(QVector<StatisticItem> statistics);
+    void SendBalance(int balance);
+    void SendError(int code);
+
 
 private slots:
     void OnNewConnection();
     void OnReadyRead();
-
 
 private:
     void ParseRequest(const QJsonObject& obj);
@@ -42,6 +48,9 @@ private:
     void HandleSetBalance(const QJsonObject& params);
     void HandleGetStatistic(const QJsonObject& params);
     void HandleGetError(const QJsonObject& params);
+
+    QJsonArray ToJson(const QVector<StatisticItem>& statisticItems) const;
+    QJsonObject ToJson(const StatisticItem& statItem) const;
 
 private:
     QTcpServer* _tcpServer;

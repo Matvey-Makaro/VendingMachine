@@ -1,4 +1,6 @@
 #include <QDebug>
+#include <QVector>
+#include <vector>
 #include "VendingMachine.h"
 
 namespace
@@ -70,13 +72,69 @@ VendingMachine::VendingMachine(VendingMachineDevicesShp devices, Database& db, Q
     // прочитать слоты
     _slots = _db.getAllSlots();
 
-    InitItemDisplays();
+    UpdateItemDisplays();
     UpdateNumpadDisplay();
 }
 
-void VendingMachine::OnBlockItem(QString itemName)
+void VendingMachine::OnSetItem(QString item, int price, int slot)
 {
-    qDebug() << "VendingMachine::OnBlockItem" << "Block item:" << itemName;
+    _db.setItem(item, price, slot);
+    _slots = _db.getAllSlots();
+    UpdateItemDisplays();
+}
+
+void VendingMachine::OnSetItemPrice(QString item, int price)
+{
+    _db.setItemPrice(item, price);
+    _slots = _db.getAllSlots();
+    UpdateItemDisplays();
+}
+
+void VendingMachine::OnSetItemSlot(QString item, int slot)
+{
+    _db.setItemSlot(item, slot);
+    _slots = _db.getAllSlots();
+    UpdateItemDisplays();
+}
+
+void VendingMachine::OnDeleteItem(QString item)
+{
+    _db.deleteItem(item);
+    _slots = _db.getAllSlots();
+    UpdateItemDisplays();
+}
+
+void VendingMachine::OnBlockItem(QString item)
+{
+    _db.blockItem(item);
+    _slots = _db.getAllSlots();
+}
+
+void VendingMachine::OnUnblockItem(QString item)
+{
+    _db.unblockItem(item);
+    _slots = _db.getAllSlots();
+}
+
+void VendingMachine::OnGetCurrBalance()
+{
+    emit SendBalance(_currMoneyAmount);
+}
+
+void VendingMachine::OnSetBalance(int balance)
+{
+    _db.setBalance(balance);
+    _currMoneyAmount = balance;
+}
+
+void VendingMachine::OnGetStatistic()
+{
+    emit SendStatistic(QVector<StatisticItem>::fromStdVector(_db.getStatistic()));
+}
+
+void VendingMachine::OnGetError()
+{
+    // TODO: Impl...
 }
 
 void VendingMachine::OnBanknoteReceived(const Banknote& banknote)
@@ -222,7 +280,7 @@ void VendingMachine::OnChangeButtonClicked()
     SetCurrMoneyAmount(0);
 }
 
-void VendingMachine::InitItemDisplays()
+void VendingMachine::UpdateItemDisplays()
 {
     auto& itemDisplays = _devices->ItemDisplays;
     for(int i = 0; i < _slots.size(); i++)

@@ -28,8 +28,21 @@ public:
     // TODO: Инициализировать корректно в конструкторе
     explicit VendingMachine(VendingMachineDevicesShp devices, Database& db, QObject *parent = nullptr);
 
+signals:
+    void SendBalance(int balance);
+    void SendStatistic(QVector<StatisticItem> statItems);
+
 public slots:
-    void OnBlockItem(QString itemName);
+    void OnSetItem(QString item, int price, int slot);
+    void OnSetItemPrice(QString item, int price);
+    void OnSetItemSlot(QString item, int slot);
+    void OnDeleteItem(QString item);
+    void OnBlockItem(QString item);
+    void OnUnblockItem(QString item);
+    void OnGetCurrBalance();
+    void OnSetBalance(int balance);
+    void OnGetStatistic();
+    void OnGetError();
 
 private slots:
     void OnBanknoteReceived(const Banknote& banknote);
@@ -38,13 +51,14 @@ private slots:
     void OnCardReaderEnabled();
     void OnCardReaderPaid();
 
+
 private:
     void AddBanknote(const Banknote& banknote);
     void AddCoin(const Coin& coin);
     void OnOkButtonClicked();
     void OnChangeButtonClicked();
 
-    void InitItemDisplays();
+    void UpdateItemDisplays();
 
     void SetCurrMoneyAmount(MoneyAmount moneyAmount);
     void UpdateNumpadDisplay();

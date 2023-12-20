@@ -42,7 +42,6 @@ HEADERS += \
     App/database.h \
     AppQt/MainWindow.h \
     AppQt/appconfiguratorqt.h \
-    AppQt/tmp.h \
     BLL/ServerGateway.h \
     BLL/VendingMachine.h \
     BLL/VendingMachineDevices.h \
