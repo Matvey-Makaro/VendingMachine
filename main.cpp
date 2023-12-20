@@ -5,9 +5,15 @@
 #include "QtImplementations/display.h"
 
 #include "AppQt/appconfiguratorqt.h"
-
+#include <QMetaType>
 #include <QApplication>
 #include <QScopedPointer>
+
+#include <QVector>
+#include "Entities/StatisticItem.h"
+
+Q_DECLARE_METATYPE(StatisticItem)
+Q_DECLARE_METATYPE(QVector<StatisticItem>)
 
 int main(int argc, char *argv[])
 {
@@ -16,6 +22,9 @@ int main(int argc, char *argv[])
     QString cfgName = "config.ini";
     AppConfigReader reader;
     auto cfg = reader.Read(cfgName);
+
+    qRegisterMetaType<StatisticItem>();
+    qRegisterMetaType<QVector<StatisticItem>>();
 
     // db test
 //    Database ;

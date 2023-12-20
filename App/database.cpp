@@ -112,7 +112,9 @@ void Database::setItem(QString name, int priceKopecks, int slotNum)
     s.id = slotNum;
     s.item = Item(name, priceKopecks);
     s.blocked = prev.blocked;
-    s.count = prev.count;
+    //s.count = prev.count;
+    //xxx
+    s.count = 10;
     s.sold = prev.sold;
 
     setSlot(s);
@@ -135,6 +137,8 @@ int Database::getSlotNumberByItemName(QString name)
 void Database::setItemSlot(QString name, int slot)
 {
     QSqlQuery q;
+
+    int prevId = getSlotNumberByItemName(name);
     _execShowError(q, QString("update slots set id = %1 where name = '%2'")
                            .arg(slot).arg(name));
 }

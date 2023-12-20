@@ -1,3 +1,4 @@
+#include <QDebug>
 #include <QThread>
 #include <QTimer>
 #include <QTcpSocket>
@@ -80,7 +81,8 @@ void ServerGateway::ParseRequest(const QJsonObject& obj)
     else
         return;
 
-    QJsonObject params = obj["params"].toObject();
+    qDebug() << "ServerGateway::ParseRequest" << "Request:" << static_cast<int>(request);
+    QJsonObject params = obj["parameters"].toObject();
 
     if(request == Request::SetItem)
         HandleSetItem(params);
@@ -108,6 +110,7 @@ void ServerGateway::ParseRequest(const QJsonObject& obj)
 
 void ServerGateway::HandleSetItem(const QJsonObject& params)
 {
+    qDebug() << "ServerGateway::HandleSetItem start";
     QString item;
     if (const QJsonValue v = params["item"]; v.isString())
         item = v.toString();
@@ -123,7 +126,9 @@ void ServerGateway::HandleSetItem(const QJsonObject& params)
         slot = v.toInt();
     else
         return;
+    slot++;
 
+    qDebug() << "ServerGateway::HandleSetItem" << "Item: " << item << "Price" << price << "Slot" << slot;
     emit SetItemSignal(item, price, slot);
 }
 
@@ -154,6 +159,7 @@ void ServerGateway::HandleSetItemSlot(const QJsonObject& params)
         slot = v.toInt();
     else
         return;
+    slot++;
     emit SetItemSlotSignal(item, slot);
 }
 

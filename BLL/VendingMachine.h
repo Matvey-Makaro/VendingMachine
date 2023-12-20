@@ -65,6 +65,9 @@ private:
 
     MoneyAmountToCoinCountOpt CalculateChange(MoneyAmount change);
 
+    bool isValidIndex(int index);
+    Slot getSlotByIndex(int index);
+
 private:
     Database& _db;
 

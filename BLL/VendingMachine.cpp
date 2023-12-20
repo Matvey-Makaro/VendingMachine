@@ -78,6 +78,7 @@ VendingMachine::VendingMachine(VendingMachineDevicesShp devices, Database& db, Q
 
 void VendingMachine::OnSetItem(QString item, int price, int slot)
 {
+    qDebug() << "VendingMachine::OnSetItem" << "Item: " << item << "Price: " << price << "Slot" << slot;
     _db.setItem(item, price, slot);
     _slots = _db.getAllSlots();
     UpdateItemDisplays();
@@ -94,11 +95,15 @@ void VendingMachine::OnSetItemSlot(QString item, int slot)
 {
     _db.setItemSlot(item, slot);
     _slots = _db.getAllSlots();
+
+    qDebug() << _slots.size() << "\n";
+
     UpdateItemDisplays();
 }
 
 void VendingMachine::OnDeleteItem(QString item)
 {
+    qDebug() << "onDeleteItem()\n";
     _db.deleteItem(item);
     _slots = _db.getAllSlots();
     UpdateItemDisplays();
@@ -124,7 +129,7 @@ void VendingMachine::OnGetCurrBalance()
 void VendingMachine::OnSetBalance(int balance)
 {
     _db.setBalance(balance);
-    _currMoneyAmount = balance;
+    SetCurrMoneyAmount(balance);
 }
 
 void VendingMachine::OnGetStatistic()
@@ -200,6 +205,32 @@ void VendingMachine::AddCoin(const Coin& coin)
     _db.setCoinCount(coin.GetValKopecks(), prevCount + 1);
 }
 
+bool VendingMachine::isValidIndex(int index)
+{
+    for (const Slot& slot : _slots)
+    {
+        if (slot.id == index)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+Slot VendingMachine::getSlotByIndex(int index)
+{
+    for (const Slot& slot : _slots)
+    {
+        if (slot.id == index)
+        {
+            return slot;
+        }
+    }
+
+    return Slot{ -1 };
+}
+
 void VendingMachine::OnOkButtonClicked()
 {
     if(_numpadDisplayText.isEmpty())
@@ -208,14 +239,21 @@ void VendingMachine::OnOkButtonClicked()
         return;
     }
 
-    int itemIndex = _numpadDisplayText.toInt() - 1;
-    if(itemIndex < 0 || itemIndex >= _slots.size())
+    int itemIndex = _numpadDisplayText.toInt();
+    Slot slot = getSlotByIndex(itemIndex);
+    if (slot.id == -1)
     {
         _devices->InfoOutputter->Output(Messages::EnterValidItemNumber);
         return;
     }
 
-    auto& slot = _slots[itemIndex];
+//    if(itemIndex < 1 || itemIndex >= _slots.size())
+//    {
+//        _devices->InfoOutputter->Output(Messages::EnterValidItemNumber);
+//        return;
+//    }
+
+//    auto& slot = _slots[itemIndex];
     if (slot.blocked)
     {
         _devices->InfoOutputter->Output(Messages::ProductIsTemporarilyUnavailable);
@@ -249,6 +287,7 @@ void VendingMachine::OnOkButtonClicked()
         _devices->InfoOutputter->Output(Messages::ProductIsTemporarilyUnavailable);
         return;
     }
+    slot.sold++;
 
     // продать
     SetCurrMoneyAmount(_currMoneyAmount - slot.item.GetMoneyAmount());
@@ -283,6 +322,12 @@ void VendingMachine::OnChangeButtonClicked()
 void VendingMachine::UpdateItemDisplays()
 {
     auto& itemDisplays = _devices->ItemDisplays;
+
+    for (auto display : _devices->ItemDisplays)
+    {
+        display->SetText("");
+    }
+
     for(int i = 0; i < _slots.size(); i++)
     {
         Item item = _slots[i].item;

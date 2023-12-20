@@ -5,6 +5,9 @@
 
 struct StatisticItem
 {
+    StatisticItem() = default;
+    ~StatisticItem() = default;
+
     QString item;
     int numOfSales;
 };
